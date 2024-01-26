@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1minor.Models;
 
 namespace WebApplication1Minor.Controllers
 {
-    public class TeacherController : Controller
+    public class UserController : Controller
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        public TeacherController(ApplicationDbContext applicationDbContext)
+        private object userAccounts;
+
+        public UserController(ApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
         }
         public IActionResult Index()
         {
-            var list = _applicationDbContext.Teachers.ToList();
-
+            var list = _applicationDbContext.UserAccounts.ToList();
             return View(list);
         }
         [HttpGet]
@@ -23,15 +25,19 @@ namespace WebApplication1Minor.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create (Teacher teacher)
+        public IActionResult Register(UserAccount userAccount)
         {
             if (ModelState.IsValid)
             {
-                _applicationDbContext.Teachers.Add(teacher);
+                _applicationDbContext.UserAccounts.Add(userAccount);
                 return RedirectToAction("Index");
             }
-            return View(teacher);
+            return View(userAccounts);
         }
 
+        private IActionResult View(object userAccounts)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
